@@ -1,7 +1,7 @@
 \documentclass[t, pdftex]{beamer}  
 %Use Cockrell School Theme.  Optional department name.  Must %ecape, i.e. use 
 %backslash, to preserve spaces.  The default is ``Cockrell School of Engineering''
-\usetheme[]{cockrell}                 
+\usetheme[]{Cockrell}                 
 %\usetheme[dept=Aerospace\ Engineering\ and\ Engineering\ Mechanics]{cockrell}                 
 %\usetheme[dept=Biomedical\ Engineering]{cockrell}                 
 %\usetheme[dept=Chemical\ Engineering]{cockrell}                 
@@ -15,7 +15,8 @@
 %\usepackage{etex}
 %\usepackage[bigfiles]{media9}
 %\graphicspath{{./figs/}}
-
+\usepackage{bussproofs}
+\usepackage[export]{adjustbox}
 %Enable cancelto in math
 \usepackage{cancel}
 \renewcommand{\CancelColor}{\color{utorange}}
@@ -24,11 +25,16 @@
 \bibliography{example.bib}
 
 
-\title{A Catchy Title}
-\subtitle{Subtitle}
-\author{UT Engineer}
-\institute{Special Event}
+\title{Presenting finite posets \\(with monotone maps?)}
+\subtitle{... using string diagrams}
+\author{Sam Balco}
+% \institute{Special Event}
 \date{\today}
+
+
+\newenvironment{bprooftree}
+  {\leavevmode\hbox\bgroup}
+  {\DisplayProof\egroup}
 
 
 \begin{document}
@@ -40,39 +46,244 @@
 \frame{\frametitle{Outline}\tableofcontents}
 
 %Section commands will define what's shown in TOC
-\section{First Slide}
+\section{What are string diagrams?}
 
 %First frame
 \begin{frame}
-    \frametitle{Cockrell School Beamer Presentation Template}
-
-    \begin{itemize}
-        %Support for external hyperlinks as shown
-        \item Conforms to \href{http://www.engr.utexas.edu/communications/visualguidelines}{Cockrell School Visual Style Guide}
-        \begin{itemize}
-            \item Exact color palette
-            \item Opensans fonts
-        \end{itemize}
-        \item Easily change department names in title bar
-        %Citations can use \footcite or \cite commands
-        \item Convenient citation system \footcite{knuth1989} \cite{lamport1986}
-        \begin{itemize}
-            \item Full citation with active hyperlinks to DOI upon first citation.
-            \item See next slide for repeated citation behavior
-        \end{itemize}
-    \end{itemize}
+    \frametitle{What are string diagrams?}
+    They are a bit like legos!
+    \begin{center}
+        \includegraphics{figures/lego.pdf}
+    \end{center}
 \end{frame}
 
-\section{Second Slide}
-\begin{frame}[c]
-    \frametitle{Other features}
-    \TeX\ \cite{knuth1989} and \LaTeX\ \cite{lamport1986} are great for equations
-    \begin{block}{An equation block}
-        \[ \vec{F} = m \vec{a} \]
-    \end{block}
-    \begin{itemize}
-        \item Second instance of citations use short citation hyperlinked to original.
-    \end{itemize}
+\begin{frame}
+    \frametitle{What are string diagrams?}
+    We can combine legos/string diagrams in two different ways:
+    \begin{center}
+        \includegraphics[width=\textwidth,keepaspectratio]{figures/lego2.pdf}
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \frametitle{What are string diagrams?}
+    We can combine legos/string diagrams in two different ways:
+    \begin{center}
+        \includegraphics[width=\textwidth,keepaspectratio]{figures/lego3.pdf}
+    \end{center}
+\end{frame}
+
+\section{String diagrams algebraically}
+
+\begin{frame}
+    \frametitle{String diagrams algebraically}
+    We can assign each string a type, given by the number of input ports (on the left) and the number of output ports on the right:
+    \begin{table}[]
+        \centering
+        \begin{tabular}{rrrr}
+            \includegraphics[valign=m, width=1cm]{figures/string2.pdf} $\ : (1,1)$ & 
+            \includegraphics[valign=m, width=1cm]{figures/string1.pdf} $\ : (2,2)$ & 
+            \includegraphics[valign=m, width=1cm]{figures/string4.pdf} $\ : (2,1)$ &
+            \includegraphics[valign=m, width=1cm]{figures/string3.pdf} $\ : (0,1)$\\
+            % \hrulefill & \hrulefill & \hrulefill & \hrulefill \\
+            & & & \\
+            $id : (1,1)$ & 
+            $\gamma : (2,2)$ & 
+            $\mu \ : (2,1)$ & 
+            $\eta \ : (0,1)$
+        \end{tabular}
+    \end{table}
+    \par
+    % \begin{table}[]
+    %     \centering
+    %     \begin{tabular}{lll}
+            
+    %     \end{tabular}
+    % \end{table}
+    % \par
+    \begin{table}[]
+        \centering
+        \begin{tabular}{ll}
+            \begin{bprooftree}
+                \AxiomC{$S:(k,l)$}
+                \AxiomC{$T:(m,n)$}
+                \BinaryInfC{$S \otimes T:(k + m,l + n)$}
+            \end{bprooftree} &
+            \begin{bprooftree}
+                \AxiomC{$S:(k,l)$}
+                \AxiomC{$T:(l,m)$}
+                \BinaryInfC{$S \circ T:(k,m)$}
+            \end{bprooftree}
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}
+    \frametitle{String diagrams algebraically}
+    \begin {center}
+        $\Bigg(\includegraphics[valign=m, width=1cm]{figures/string2.pdf} \otimes
+        \includegraphics[valign=m, width=1cm]{figures/string1.pdf} \Bigg) \circ 
+        \Bigg(\includegraphics[valign=m, width=1cm]{figures/string1.pdf} \otimes
+        \includegraphics[valign=m, width=1cm]{figures/string2.pdf} \Bigg)$\\
+        \vspace{.5cm}
+        $=$\\
+        \vspace{.5cm}
+        $(id \otimes \gamma) \circ (\gamma \otimes id)$\\
+        \vspace{.5cm}
+        $=$\\
+        \vspace{.5cm}
+        $\includegraphics[valign=m, width=2cm]{figures/dia1.pdf}$\\
+        
+        
+    \end{center}
+\end{frame}
+
+\section{Presenting finite sets and functions}
+\begin{frame}
+    \frametitle{Presenting finite sets and functions}
+    So what can we do with $id, \gamma, \mu$ and $\eta$?
+    \par \ 
+    \par
+    Say we have function $f : [5] \to [5]$ (where $[n] = \{0\hdots n-1\}$):
+    \begin{align*}
+        f(0) &= 1\\
+        f(1) &= 0\\
+        f(2) &= 4\\
+        f(3) &= 3\\
+        f(4) &= 1
+    \end{align*}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Presenting finite sets and functions}
+    So what can we do with $id, \gamma, \mu$ and $\eta$?
+    \par \ 
+    \par
+    We can express this function as a string diagram:
+    \begin{center}
+        \includegraphics[height=4.5cm,keepaspectratio]{figures/dia2.pdf}
+    \end{center}
+
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Presenting finite sets and functions}
+    So what can we do with $id, \gamma, \mu$ and $\eta$?
+    \par \ 
+    \par
+    Or alternatively:
+    \begin{center}
+        $(id \otimes id \otimes id \otimes \gamma)\ \circ$\\
+        $(\gamma \otimes \gamma \otimes id)\ \circ$\\
+        $(id \otimes \mu \otimes \eta \otimes \gamma)$
+    \end{center}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Presenting finite sets and functions}
+    
+    \begin{center}
+        What happens if we remove $\gamma$ from our list of possible generators?
+    \end{center}
+
+\end{frame}
+
+
+\section{Refresher on posets}
+
+\begin{frame}
+    \frametitle{Refresher on posets}
+    A \textit{poset} is a set $S$, together with a partial order relation $\leq_S\ : S \times S$, which is \textit{reflexive}, \textit{transitive} and \textit{antisymmetric}.
+
+    For example, for $S = \{a,b,c,d,e\}$ and $a \leq_S c ,\allowbreak a \leq_S d,\allowbreak b \leq_S d,\allowbreak c \leq_S e,\allowbreak d \leq_S e$, we can draw the following diagram, representing the poset:
+    \begin{center}
+    \begin{tikzpicture}
+    \node (a) at (0,0) {$a$};
+    \node (c) at (-1,1) {$c$};
+    \node (d) at (1,1) {$d$};
+    \node (e) at (0,2) {$e$};
+    \node (b) at (2,0) {$b$};
+    \node (f) at (2,2) {$f$};
+    \draw (a) -- (c);
+    \draw (a) -- (d);
+    \draw (b) -- (d);
+    \draw (c) -- (e);
+    \draw (d) -- (e);
+    \draw (d) -- (f);
+    \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Refresher on posets}
+    \begin{center}
+    \begin{tikzpicture}
+    \node (a) at (0,0) {$a$};
+    \node (b) at (0,-2) {$b$};
+    \node (c) at (1,1) {$c$};
+    \node (d) at (1,-1) {$d$};
+    \node (e) at (2,0) {$e$};
+    \node (f) at (2, -2) {$f$};
+    \draw[->] (a) -- (c);
+    \draw[->] (a) -- (d);
+    \draw[->] (b) -- (d);
+    \draw[->] (c) -- (e);
+    \draw[->] (d) -- (e);
+    \draw[->] (d) -- (f);
+    \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+\section{Presenting posets}
+
+\begin{frame}
+    \frametitle{Presenting posets}
+    \begin{center}
+    \begin{tikzpicture}
+    \node (a) at (0,0) {$\circ$};
+    \node (b) at (0,-2) {$\circ$};
+    \node (c) at (1,1) {$\circ$};
+    \node (d) at (1,-1) {$\circ$};
+    \node (e) at (2,0) {$\circ$};
+    \node (f) at (2, -2) {$\circ$};
+    \draw[->] (a) -- (c);
+    \draw[->] (a) -- (d);
+    \draw[->] (b) -- (d);
+    \draw[->] (c) -- (e);
+    \draw[->] (d) -- (e);
+    \draw[->] (d) -- (f);
+    \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Presenting posets}
+    \begin{center}
+    \begin{tikzpicture}
+    \node (a) at (0,0) {$\circ$};
+    \node (b) at (0,-2) {$\circ$};
+    \node (c) at (1,1) {$\bullet$};
+    \node (d) at (1,-1) {$\bullet$};
+    \node (e) at (2,0) {$\circ$};
+    \node (f) at (2, -2) {$\circ$};
+    \draw[->] (a) -- (c);
+    \draw[->] (a) -- (d);
+    \draw[->] (b) -- (d);
+    \draw[->] (c) -- (e);
+    \draw[->] (d) -- (e);
+    \draw[->] (d) -- (f);
+    \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Presenting posets}
+    \begin{center}
+        \includegraphics{figures/dia3.pdf}
+    \end{center}
 \end{frame}
 
 
